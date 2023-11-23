@@ -18,9 +18,10 @@ public class BestStoriesResource {
     RestClientService serviceToBeMocked;
 
     @GET
-    @Path("/hello")
+    @Path("/beststories")
     @Produces(MediaType.TEXT_PLAIN)
-    public Uni<String> hello() {
+    public Uni<String> bestStories() {
         return serviceToBeMocked.get(); // this call needs to be mocked
     }
 }
+

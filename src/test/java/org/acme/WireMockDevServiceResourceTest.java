@@ -19,13 +19,19 @@ import io.quarkiverse.wiremock.devservice.ConnectWireMock;
 class WireMockDevServiceResourceTest {
 
     private static final String MOCK_MSG = "Hello from WireMock!";
-    WireMock wiremock; // will be injected automatically when the class has been annotated with @ConnectWireMock
+    WireMock wiremock; // will be injected automatically
 
     @Test
     void testHelloEndpoint() {
         Assertions.assertNotNull(wiremock);
-        wiremock.register(get(urlEqualTo("/mock-me")).willReturn(aResponse().withStatus(200).withBody(MOCK_MSG)));
+        wiremock.register(get(urlEqualTo("/mock-me"))
+            .willReturn(aResponse().withStatus(200).withBody(MOCK_MSG)));
 
-        given().when().get("/hello").then().statusCode(200).body(is(MOCK_MSG));
+        given().when().get("/beststories").then()
+            .statusCode(200)
+            .body(is(MOCK_MSG));
     }
 }
+
+
+
