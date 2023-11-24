@@ -79,7 +79,6 @@
       <groupId>io.quarkiverse.wiremock</groupId>
       <artifactId>quarkus-wiremock</artifactId>
       <version>1.0.0</version>
-      <scope>test</scope>
     </dependency>
     <!-- Test client for WireMock -->
     <dependency>
