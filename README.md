@@ -1,4 +1,4 @@
-# code-with-quarkus
+# Demo: WireMock Dev Service for Quarkus
 
 Demo of the Quarkus Dev service for WireMock.
 It uses Hacker News as a data source, and mocks its REST API for local development.
