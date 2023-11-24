@@ -24,4 +24,8 @@ public interface RestClientService {
     @Path("/item/{id}.json")
     Uni<HackerNewsItem> getItem(@PathParam("id") String id);
 
+    @GET
+    @Path("/user/{id}.json")
+    Uni<String> getUser(@PathParam("id") String id);
+
 }

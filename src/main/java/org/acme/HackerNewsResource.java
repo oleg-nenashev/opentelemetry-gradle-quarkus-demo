@@ -32,5 +32,12 @@ public class HackerNewsResource {
     public Uni<HackerNewsItem> item(@RestPath String id) {
         return serviceToBeMocked.getItem(id);
     }
+
+    @GET
+    @Path("/user/{id}.json")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Uni<String> user(@RestPath String id) {
+        return serviceToBeMocked.getUser(id);
+    }
 }
 
