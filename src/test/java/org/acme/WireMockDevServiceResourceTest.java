@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.containsString;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,12 +25,19 @@ class WireMockDevServiceResourceTest {
     @Test
     void testHelloEndpoint() {
         Assertions.assertNotNull(wiremock);
-        wiremock.register(get(urlEqualTo("/mock-me"))
-            .willReturn(aResponse().withStatus(200).withBody(MOCK_MSG)));
-
-        given().when().get("/beststories").then()
+        
+        given().when().get("/hello").then()
             .statusCode(200)
-            .body(is(MOCK_MSG));
+            .body(containsString("Hello from RESTEasy"));
+    }
+
+    @Test
+    void testBestStories() {
+        Assertions.assertNotNull(wiremock);
+        
+        given().when().get("/hackernews/beststories.json").then()
+            .statusCode(200)
+            .body(containsString("12346"));
     }
 }
 
