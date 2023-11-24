@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wiremock.demos.quarkus</groupId>
-  <artifactId>code-with-quarkus</artifactId>
+  <artifactId>wiremock-quarkus-devservice-demo</artifactId>
   <name>Demo: WireMock Dev Service for Quarkus</name>
   <description>Demo of the Quarkus Dev service for WireMock. It uses Hacker News as a data source</description>
   <url>https://github.com/wiremock/wiremock-quarkus-devservice-demo</url>

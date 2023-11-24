@@ -6,3 +6,4 @@ import io.quarkus.test.junit.QuarkusIntegrationTest;
 public class WireMockDevServiceResourceIT extends WireMockDevServiceResourceTest {
     // re-use Quarkus tests as integration tests
 }
+
