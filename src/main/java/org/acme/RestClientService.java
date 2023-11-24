@@ -11,7 +11,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 
-@Path("/v0")
+@Path("/")
 @RegisterRestClient(configKey = "hackernews-api-server")
 @Produces(MediaType.APPLICATION_JSON)
 public interface RestClientService {

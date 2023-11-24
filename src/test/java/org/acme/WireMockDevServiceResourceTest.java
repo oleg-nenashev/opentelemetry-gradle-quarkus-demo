@@ -19,7 +19,6 @@ import io.quarkiverse.wiremock.devservice.ConnectWireMock;
 @ConnectWireMock
 class WireMockDevServiceResourceTest {
 
-    private static final String MOCK_MSG = "Hello from WireMock!";
     WireMock wiremock; // will be injected automatically
 
     @Test
