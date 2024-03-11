@@ -63,5 +63,6 @@ tasks.withType<Test> {
     dependsOn(":quarkusBuild")
     useJUnitPlatform()
     systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
+    maxParallelForks = 1;
 }
 
