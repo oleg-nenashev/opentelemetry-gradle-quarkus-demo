@@ -6,7 +6,7 @@ plugins {
     `kotlin-dsl`
     `java`
     `idea`
-    id("io.quarkus") version "3.8.2"
+    id("io.quarkus") version "3.3.2"
     `maven-publish`
 }
 
