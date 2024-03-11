@@ -34,10 +34,10 @@ dependencies {
     api(libs.io.quarkus.quarkus.resteasy.reactive)
     api(libs.io.quarkus.quarkus.rest.client.reactive.jackson)
     api(libs.io.quarkus.quarkus.resteasy.reactive.jackson)
-    api(libs.io.quarkiverse.wiremock.quarkus.wiremock)
+    api("io.quarkiverse.wiremock:quarkus-wiremock:1.3.0")
 
     testImplementation(libs.io.quarkus.quarkus.junit5)
-    testImplementation(libs.io.quarkiverse.wiremock.quarkus.wiremock.test)
+    testImplementation("io.quarkiverse.wiremock:quarkus-wiremock-test:1.3.0")
     testImplementation(libs.io.rest.assured.rest.assured) {
       exclude(group = "org.apache.groovy", module = "groovy")
       exclude(group = "org.apache.groovy", module = "groovy-xml")
