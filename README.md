@@ -1,5 +1,8 @@
 # Demo: Quarkus web service with Gradle
 
+> **WARNING:**: This branch delibirately includes old Quarkus version with
+[CVE-2023-4853](https://quarkus.io/blog/cve-2023-4853/) in `io.quarkus:quarkus-vertx-http`
+
 Demonstrates using Gradle Quarkus Plugin for building a Quarkus a web application with Gradle,
 with the WireMock dev service being used for development purposes.
 It uses Hacker News as a data source and mocks its REST API for local development.
