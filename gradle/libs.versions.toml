@@ -2,7 +2,7 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-io-quarkiverse-wiremock-quarkus-wiremock = "1.0.0"
+io-quarkiverse-wiremock-quarkus-wiremock = "1.3.0"
 io-quarkiverse-wiremock-quarkus-wiremock-test = "1.0.0"
 io-quarkus-quarkus-arc = "3.5.3"
 io-quarkus-quarkus-junit5 = "3.5.3"
