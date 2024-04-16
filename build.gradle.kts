@@ -8,6 +8,7 @@ plugins {
     `idea`
     id("io.quarkus") version "3.3.2"
     `maven-publish`
+    id("com.atkinsondev.opentelemetry-build") version "1.9.1"
 }
 
 group = "com.gradle.demos.quarkus.wiremock"
@@ -29,6 +30,7 @@ val quarkusPlatformArtifactId: String by project
 val quarkusPlatformVersion: String by project
 
 dependencies {
+    implementation("io.quarkus:quarkus-opentelemetry")
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
     api(libs.io.quarkus.quarkus.arc)
     api(libs.io.quarkus.quarkus.resteasy.reactive)
@@ -66,3 +68,7 @@ tasks.withType<Test> {
     maxParallelForks = 1;
 }
 
+openTelemetryBuild {
+    endpoint = "http://localhost:4317"
+    exporterMode = com.atkinsondev.opentelemetry.build.OpenTelemetryExporterMode.GRPC
+}
