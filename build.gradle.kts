@@ -8,7 +8,7 @@ plugins {
     `idea`
     id("io.quarkus") version "3.3.2"
     `maven-publish`
-    id("com.atkinsondev.opentelemetry-build") version "1.9.1"
+    id("com.atkinsondev.opentelemetry-build") version "1.14.0"
 }
 
 group = "com.gradle.demos.quarkus.wiremock"
