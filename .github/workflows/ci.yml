@@ -52,7 +52,7 @@ jobs:
       with:
         report_paths: '**/build/test-results/test/TEST-*.xml'
 
-    - name: Export job telemetry
+    - name: Export Job Telemetry
       if: always()
       uses: krzko/export-job-telemetry@v0.3.0
       with:
@@ -60,7 +60,8 @@ jobs:
         job-status: ${{ job.status }}
         job-name: ${{ steps.setup-telemetry.outputs.job-name }}
         otel-exporter-otlp-endpoint: ${{ env.otel-exporter-otlp-endpoint }}
-        otel-resource-attributes: "foo.new_attribute=123,${{ env.otel-resource-attributes }}"
+        otel-exporter-otlp-headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}"
+        otel-resource-attributes: "${{ env.otel-resource-attributes }}"
         otel-service-name: ${{ env.otel-service-name }}
         started-at: ${{ steps.setup-telemetry.outputs.started-at }}
         traceparent: ${{ steps.setup-telemetry.outputs.traceparent }}
