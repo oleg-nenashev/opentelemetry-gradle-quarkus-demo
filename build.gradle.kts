@@ -65,12 +65,22 @@ tasks.withType<Test> {
 }
 
 //if (System.getenv("OTEL_ENDPOINT") != null) {
-    openTelemetryBuild {
-        serviceName = System.getenv("OTEL_SERVICE_NAME")
-        endpoint = System.getenv("OTEL_ENDPOINT")
-        headers = mapOf (System.getenv("OTEL_API_TOKEN_HEADER") to System.getenv("OTEL_API_TOKEN"))
-        exporterMode = com.atkinsondev.opentelemetry.build.OpenTelemetryExporterMode.GRPC
-    }
+openTelemetryBuild {
+    serviceName = System.getenv("OTEL_SERVICE_NAME")
+    endpoint = System.getenv("OTEL_ENDPOINT")
+    headers = mapOf (System.getenv("OTEL_API_TOKEN_HEADER") to System.getenv("OTEL_API_TOKEN"))
+    exporterMode = com.atkinsondev.opentelemetry.build.OpenTelemetryExporterMode.GRPC
+}
+
+tasks.withType<Test> {
+    jvmArgs("-javaagent:opentelemetry-javaagent.jar",
+        "-Dotel.service.name=" + System.getenv("OTEL_SERVICE_NAME"),
+        "-Dotel.exporter.otlp.protocol=http/protobuf",
+        "-Dotel.exporter.otlp.endpoint=" + System.getenv("OTEL_ENDPOINT"),
+        "-Dotel.exporter.otlp.headers=" + System.getenv("OTEL_API_TOKEN_HEADER") + "=" + System.getenv("OTEL_API_TOKEN"))
+}
+
+
 //} else {
 //    openTelemetryBuild {
 //        endpoint = "http://localhost:4317"

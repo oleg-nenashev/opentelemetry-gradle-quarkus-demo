@@ -38,11 +38,15 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
+    - name: Setup OTel Agent
+      run: curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
+
     - name: Build with Gradle
       run: ./gradlew build
       env:
         OTEL_SERVICE_NAME: ${{ env.otel-service-name }}
         OTEL_ENDPOINT: ${{ env.otel-exporter-otlp-endpoint }}
+        OTEL_ENDPOINT_GRPC: ${{ env.otel-exporter-otlp-endpoint-grpc }}
         OTEL_API_TOKEN_HEADER: x-honeycomb-team
         OTEL_API_TOKEN: ${{ secrets.HONEYCOMB_API_TOKEN }}
         TRACE_ID: ${{ steps.setup-telemetry.outputs.traceparent }}

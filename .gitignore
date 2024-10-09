@@ -45,3 +45,4 @@ nb-configuration.xml
 
 # Plugin directory
 /.quarkus/cli/plugins/
+opentelemetry-javaagent.jar
