@@ -15,6 +15,7 @@ permissions:
 env:
   honeycomb-url: https://ui.honeycomb.io/foo/environments/dev/datasets/github.com.foo/trace?trace_id=
   otel-exporter-otlp-endpoint: https://api.honeycomb.io
+  otel-exporter-otlp-endpoint-grpc: api.honeycomb.io:443
   otel-service-name: "demo-java-cicd-o11y"
   otel-resource-attributes: deployment.environent=dev,service.version=0.1.0
 
@@ -40,7 +41,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       env:
-        OTEL_ENDPOINT: ${{ env.otel-exporter-otlp-endpoint }}
+        OTEL_ENDPOINT: ${{ env.otel-exporter-otlp-endpoint-grpc }}
         OTEL_API_TOKEN_HEADER: x-honeycomb-team
         OTEL_API_TOKEN: ${{ secrets.HONEYCOMB_API_TOKEN }}
         TRACE_ID: ${{ steps.setup-telemetry.outputs.traceparent }}
@@ -59,7 +60,7 @@ jobs:
         created-at: ${{ steps.setup-telemetry.outputs.created-at }}
         job-status: ${{ job.status }}
         job-name: ${{ steps.setup-telemetry.outputs.job-name }}
-        otel-exporter-otlp-endpoint: ${{ env.otel-exporter-otlp-endpoint }}
+        otel-exporter-otlp-endpoint: ${{ env.otel-exporter-otlp-endpoint-grpc }}
         otel-exporter-otlp-headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}"
         otel-resource-attributes: "${{ env.otel-resource-attributes }}"
         otel-service-name: ${{ env.otel-service-name }}
