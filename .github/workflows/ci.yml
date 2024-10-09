@@ -41,11 +41,14 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       env:
+        OTEL_SERVICE_NAME: ${{ env.otel-service-name }}
         OTEL_ENDPOINT: ${{ env.otel-exporter-otlp-endpoint }}
         OTEL_API_TOKEN_HEADER: x-honeycomb-team
         OTEL_API_TOKEN: ${{ secrets.HONEYCOMB_API_TOKEN }}
         TRACE_ID: ${{ steps.setup-telemetry.outputs.traceparent }}
         SPAN_ID: 12345
+        quarkus_otel_exporter_otlp_traces_endpoint: ${{ env.otel-exporter-otlp-endpoint-otel-exporter-otlp-endpoint-grpc }}
+        quarkus_otel_exporter_otlp_headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}"
     
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v4

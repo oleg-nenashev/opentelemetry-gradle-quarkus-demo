@@ -66,6 +66,7 @@ tasks.withType<Test> {
 
 //if (System.getenv("OTEL_ENDPOINT") != null) {
     openTelemetryBuild {
+        serviceName = System.getenv("OTEL_SERVICE_NAME")
         endpoint = System.getenv("OTEL_ENDPOINT")
         headers = mapOf (System.getenv("OTEL_API_TOKEN_HEADER") to System.getenv("OTEL_API_TOKEN"))
         exporterMode = com.atkinsondev.opentelemetry.build.OpenTelemetryExporterMode.GRPC
