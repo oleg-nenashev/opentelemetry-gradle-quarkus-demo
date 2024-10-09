@@ -41,7 +41,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       env:
-        OTEL_ENDPOINT: ${{ env.otel-exporter-otlp-endpoint-grpc }}
+        OTEL_ENDPOINT: ${{ env.otel-exporter-otlp-endpoint }}
         OTEL_API_TOKEN_HEADER: x-honeycomb-team
         OTEL_API_TOKEN: ${{ secrets.HONEYCOMB_API_TOKEN }}
         TRACE_ID: ${{ steps.setup-telemetry.outputs.traceparent }}
