@@ -1,11 +1,10 @@
 plugins {
-    `kotlin-dsl`
+    `kotlin-dsl` version "5.1.1"
     `java`
     `idea`
     id("io.quarkus") version "3.15.1"
     `maven-publish`
     id("com.atkinsondev.opentelemetry-build") version "1.9.1"
-    id("com.gradle.develocity") version("3.18.1")
 }
 
 group = "com.gradle.demos.quarkus.wiremock"
@@ -70,6 +69,3 @@ openTelemetryBuild {
     exporterMode = com.atkinsondev.opentelemetry.build.OpenTelemetryExporterMode.GRPC
 }
 
-develocity {
-
-}
