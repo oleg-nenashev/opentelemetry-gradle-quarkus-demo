@@ -12,22 +12,55 @@ permissions:
   actions: read
   checks: write
 
+env:
+  honeycomb-url: https://ui.honeycomb.io/foo/environments/dev/datasets/github.com.foo/trace?trace_id=
+  otel-exporter-otlp-endpoint: https://api.honeycomb.io
+  otel-service-name: "demo-java-cicd-o11y"
+  otel-resource-attributes: deployment.environent=dev,service.version=0.1.0
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Setup telemetry
+      id: setup-telemetry
+      uses: krzko/setup-telemetry@v0.5.4
+      with:
+        observability-backend-url: ${{ env.honeycomb-url }}
+
     - name: Checkout sources
       uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
     - name: Build with Gradle
       run: ./gradlew build
+      env:
+        OTEL_ENDPOINT: ${{ env.otel-exporter-otlp-endpoint }}
+        OTEL_API_TOKEN_HEADER: x-honeycomb-team
+        OTEL_API_TOKEN: ${{ secrets.HONEYCOMB_API_TOKEN }}
+        TRACE_ID: ${{ steps.setup-telemetry.outputs.traceparent }}
+        SPAN_ID: 12345
+    
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v4
       if: success() || failure() # always run even if the previous step fails
       with:
         report_paths: '**/build/test-results/test/TEST-*.xml'
+
+    - name: Export job telemetry
+      if: always()
+      uses: krzko/export-job-telemetry@v0.3.0
+      with:
+        created-at: ${{ steps.setup-telemetry.outputs.created-at }}
+        job-status: ${{ job.status }}
+        job-name: ${{ steps.setup-telemetry.outputs.job-name }}
+        otel-exporter-otlp-endpoint: ${{ env.otel-exporter-otlp-endpoint }}
+        otel-resource-attributes: "foo.new_attribute=123,${{ env.otel-resource-attributes }}"
+        otel-service-name: ${{ env.otel-service-name }}
+        started-at: ${{ steps.setup-telemetry.outputs.started-at }}
+        traceparent: ${{ steps.setup-telemetry.outputs.traceparent }}
