@@ -73,9 +73,14 @@ openTelemetryBuild {
     traceViewUrl = "https://ui.honeycomb.io/team-a-utomation/environments/test/datasets/demo-java-cicd-o11y/trace?trace_id={traceId}"
 }
 
+// https://opentelemetry.io/docs/zero-code/java/agent/
 tasks.withType<Test> {
-    jvmArgs("-javaagent:opentelemetry-javaagent.jar",
+    environment("TRACE_ID", System.getenv("TRACE_ID"))
+    environment("SPAN_ID", System.getenv("SPAN_ID"))
+    jvmArgs(
+        "-javaagent:opentelemetry-javaagent.jar",
         "-Dotel.service.name=" + System.getenv("OTEL_SERVICE_NAME"),
+        "-Dotel.instrumentation.runtime-telemetry-java17.enabled=true" /* JFR Metrics for tests */,
         "-Dotel.exporter.otlp.protocol=http/protobuf",
         "-Dotel.exporter.otlp.endpoint=" + System.getenv("OTEL_ENDPOINT"),
         "-Dotel.exporter.otlp.headers=" + System.getenv("OTEL_API_TOKEN_HEADER") + "=" + System.getenv("OTEL_API_TOKEN"))
