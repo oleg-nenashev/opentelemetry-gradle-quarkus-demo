@@ -13,6 +13,10 @@ Components:
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
+## Slides
+
+The most recent version is here: https://speakerdeck.com/onenashev/java-cicd-observability
+
 ## GitHub Actions with Honeycomb
 
 I took Honeycomb for the GitHub Actions demo.
