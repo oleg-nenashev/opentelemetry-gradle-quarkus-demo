@@ -23,6 +23,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: honeycombio/gha-buildevents@v2
+      with:
+        apikey: ${{ secrets.HONEYCOMB_API_TOKEN }}
+        dataset: gha-buildevents_integration
+        status: ${{ job.status }}
+        matrix-key: ${{ matrix.value }}
+      # SETS TRACE_ID
+
     - name: Setup telemetry
       id: setup-telemetry
       uses: krzko/setup-telemetry@v0.5.4
@@ -49,9 +57,9 @@ jobs:
         OTEL_ENDPOINT_GRPC: ${{ env.otel-exporter-otlp-endpoint-grpc }}
         OTEL_API_TOKEN_HEADER: x-honeycomb-team
         OTEL_API_TOKEN: ${{ secrets.HONEYCOMB_API_TOKEN }}
-        TRACE_ID: ${{ steps.setup-telemetry.outputs.trace-id }}
+        TRACE_ID: ${{ env.TRACE_ID }}
         SPAN_ID: ${{ steps.setup-telemetry.outputs.job-span-id }}
-        quarkus_otel_exporter_otlp_traces_endpoint: ${{ env.otel-exporter-otlp-endpoint-otel-exporter-otlp-endpoint-grpc }}
+        quarkus_otel_exporter_otlp_traces_endpoint: ${{ env.otel-exporter-otlp-endpoint-grpc }}
         quarkus_otel_exporter_otlp_headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }},${{ env.otel-otel-resource-attributes }}"
     
     - name: Publish Test Report
