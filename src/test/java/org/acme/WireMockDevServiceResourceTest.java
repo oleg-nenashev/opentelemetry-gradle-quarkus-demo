@@ -19,7 +19,7 @@ import io.quarkiverse.wiremock.devservice.ConnectWireMock;
 @ConnectWireMock
 class WireMockDevServiceResourceTest {
 
-    WireMock wiremock; // will be injected automatically
+    WireMock wiremock;
 
     @Test
     void testHelloEndpoint() {
