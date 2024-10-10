@@ -70,7 +70,7 @@ openTelemetryBuild {
     endpoint = System.getenv("OTEL_ENDPOINT")
     headers = mapOf (System.getenv("OTEL_API_TOKEN_HEADER") to System.getenv("OTEL_API_TOKEN"))
     exporterMode = com.atkinsondev.opentelemetry.build.OpenTelemetryExporterMode.GRPC
-    raceViewUrl = "https://ui.honeycomb.io/team-a-utomation/environments/test/datasets/demo-java-cicd-o11y/trace?trace_id={traceId}"
+    traceViewUrl = "https://ui.honeycomb.io/team-a-utomation/environments/test/datasets/demo-java-cicd-o11y/trace?trace_id={traceId}"
 }
 
 tasks.withType<Test> {
