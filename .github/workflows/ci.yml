@@ -102,5 +102,5 @@ jobs:
         with:
           otelServiceName: ${{ env.otel-service-name }}
           otlpEndpoint: grpc://api.honeycomb.io:443/
-          otlpHeaders: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}
+          otlpHeaders: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}"
           githubToken: ${{ secrets.GITHUB_TOKEN }}
