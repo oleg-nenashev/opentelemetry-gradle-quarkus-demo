@@ -64,8 +64,32 @@ tasks.withType<Test> {
     maxParallelForks = 1;
 }
 
+//if (System.getenv("OTEL_ENDPOINT") != null) {
 openTelemetryBuild {
-    endpoint = "http://localhost:4317"
+    serviceName = System.getenv("OTEL_SERVICE_NAME")
+    endpoint = System.getenv("OTEL_ENDPOINT")
+    headers = mapOf (System.getenv("OTEL_API_TOKEN_HEADER") to System.getenv("OTEL_API_TOKEN"))
     exporterMode = com.atkinsondev.opentelemetry.build.OpenTelemetryExporterMode.GRPC
+    traceViewUrl = "https://ui.honeycomb.io/team-a-utomation/environments/test/datasets/demo-java-cicd-o11y/trace?trace_id={traceId}"
 }
 
+// https://opentelemetry.io/docs/zero-code/java/agent/
+tasks.withType<Test> {
+    environment("TRACE_ID", System.getenv("TRACE_ID"))
+    environment("SPAN_ID", System.getenv("SPAN_ID"))
+    jvmArgs(
+        "-javaagent:opentelemetry-javaagent.jar",
+        "-Dotel.service.name=" + System.getenv("OTEL_SERVICE_NAME"),
+        "-Dotel.instrumentation.runtime-telemetry-java17.enabled=true" /* JFR Metrics for tests */,
+        "-Dotel.exporter.otlp.protocol=http/protobuf",
+        "-Dotel.exporter.otlp.endpoint=" + System.getenv("OTEL_ENDPOINT"),
+        "-Dotel.exporter.otlp.headers=" + System.getenv("OTEL_API_TOKEN_HEADER") + "=" + System.getenv("OTEL_API_TOKEN"))
+}
+
+
+//} else {
+//    openTelemetryBuild {
+//        endpoint = "http://localhost:4317"
+//        exporterMode = com.atkinsondev.opentelemetry.build.OpenTelemetryExporterMode.GRPC
+//    }
+//}

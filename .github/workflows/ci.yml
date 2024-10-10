@@ -12,22 +12,95 @@ permissions:
   actions: read
   checks: write
 
+env:
+  honeycomb-url: https://ui.honeycomb.io/team-a-utomation/environments/test/datasets/demo-java-cicd-o11y/trace?trace_id=
+  otel-exporter-otlp-endpoint: https://api.honeycomb.io
+  otel-exporter-otlp-endpoint-grpc: api.honeycomb.io:443
+  otel-service-name: "demo-java-cicd-o11y"
+  otel-resource-attributes: deployment.environment=test,service.version=0.1.0
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: honeycombio/gha-buildevents@v2
+      with:
+        apikey: ${{ secrets.HONEYCOMB_API_TOKEN }}
+        dataset: ${{ env.otel-service-name }}
+        status: ${{ job.status }}
+        matrix-key: ${{ matrix.value }}
+        send-init-event: true
+      # SETS TRACE_ID
+
+    - name: Setup telemetry
+      id: setup-telemetry
+      uses: krzko/setup-telemetry@v0.5.4
+      with:
+        github-token: ${{ github.token }}
+        observability-backend-url: ${{ env.honeycomb-url }}
+
     - name: Checkout sources
       uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
+      with:
+        add-job-summary-as-pr-comment: on-failure
+        build-scan-publish: true
+        build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+        build-scan-terms-of-use-agree: "yes"
+
+    - name: Setup OTel Agent
+      run: curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
+
     - name: Build with Gradle
       run: ./gradlew build
+      env:
+        OTEL_SERVICE_NAME: ${{ env.otel-service-name }}
+        OTEL_ENDPOINT: ${{ env.otel-exporter-otlp-endpoint }}
+        OTEL_ENDPOINT_GRPC: ${{ env.otel-exporter-otlp-endpoint-grpc }}
+        OTEL_API_TOKEN_HEADER: x-honeycomb-team
+        OTEL_API_TOKEN: ${{ secrets.HONEYCOMB_API_TOKEN }}
+        TRACE_ID: ${{ env.TRACE_ID }}
+        SPAN_ID: ${{ steps.setup-telemetry.outputs.job-span-id }}
+        quarkus_otel_exporter_otlp_protocol: http/protobuf
+        quarkus_otel_exporter_otlp_traces_endpoint: ${{ env.otel-exporter-otlp-endpoint }}
+        quarkus_otel_exporter_otlp_headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }},${{ env.otel-otel-resource-attributes }}"
+    
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v4
       if: success() || failure() # always run even if the previous step fails
       with:
         report_paths: '**/build/test-results/test/TEST-*.xml'
+
+    - name: Export Job Telemetry
+      if: always()
+      uses: krzko/export-job-telemetry@v0.3.0
+      with:
+        created-at: ${{ steps.setup-telemetry.outputs.created-at }}
+        job-status: ${{ job.status }}
+        job-name: ${{ steps.setup-telemetry.outputs.job-name }}
+        otel-exporter-otlp-endpoint: ${{ env.otel-exporter-otlp-endpoint-grpc }}
+        otel-exporter-otlp-headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}"
+        otel-resource-attributes: "${{ env.otel-resource-attributes }}"
+        otel-service-name: ${{ env.otel-service-name }}
+        started-at: ${{ steps.setup-telemetry.outputs.started-at }}
+        traceparent: ${{ steps.setup-telemetry.outputs.traceparent }}
+
+  otel-export-trace:
+    if: always()
+    name: OpenTelemetry Export Trace
+    runs-on: ubuntu-latest
+    needs: [build] # must run when all jobs are complete
+    steps:
+      - name: Export Workflow Trace
+        uses: inception-health/otel-export-trace-action@latest
+        with:
+          otelServiceName: ${{ env.otel-service-name }}
+          otlpEndpoint: grpc://api.honeycomb.io:443/
+          otlpHeaders: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}"
+          githubToken: ${{ secrets.GITHUB_TOKEN }}

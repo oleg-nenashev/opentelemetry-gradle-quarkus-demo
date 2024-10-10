@@ -13,13 +13,28 @@ Components:
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
-## Starting 
+## GitHub Actions with Honeycomb
+
+I took Honeycomb for the GitHub Actions demo.
+You can fork the repository and do minimum reconfiguration to reproduce it on your instance.
+
+### Manual test
+
+```shell
+SPAN_ID=abc5 TRACE_ID=cda5 OTEL_ENDPOINT=https://api.honeycomb.io OTEL_ENDPOINT_GRPC=api.honeycomb.io:443 OTEL_API_TOKEN_HEADER=x-honeycomb-team OTEL_API_TOKEN=${YOUR_TOKEN} OTEL_SERVICE_NAME=test ./gradlew build
+```
+
+## Local Test
+
+### Starting OTel Collector
+
+We will use `jaegertracing/all-in-one` for the demo
 
 ```shell
 ./run-otel.sh
 ```
 
-## Tracing the build process
+### Tracing the build process
 
 ```
  SPAN_ID=abc5 TRACE_ID=cda5 ./gradlew build
@@ -27,12 +42,12 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 Use `clean`, `test`, or any other Gradle Build Tool's feature to alter the behavior.
 
-## Running the application in dev mode
+### Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
 
 ```shell script
- SPAN_ID=abc5 TRACE_ID=cda5 quarkus dev
+quarkus dev
 ```
 
 Or:
@@ -42,3 +57,16 @@ Or:
 ```
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at `http://localhost:8080/q/dev/`.
+
+### Packaging and running the application
+
+The application can be packaged using:
+
+```shell script
+./gradlew quarkusBuild
+```
+
+It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
+
+The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
