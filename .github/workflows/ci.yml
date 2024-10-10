@@ -87,4 +87,4 @@ jobs:
         otel-resource-attributes: "${{ env.otel-resource-attributes }}"
         otel-service-name: ${{ env.otel-service-name }}
         started-at: ${{ steps.setup-telemetry.outputs.started-at }}
-        traceparent: ${{ env.TRACE_ID }}
+        traceparent: ${{ steps.setup-telemetry.outputs.traceparent }}
