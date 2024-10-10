@@ -67,7 +67,8 @@ jobs:
         OTEL_API_TOKEN: ${{ secrets.HONEYCOMB_API_TOKEN }}
         TRACE_ID: ${{ env.TRACE_ID }}
         SPAN_ID: ${{ steps.setup-telemetry.outputs.job-span-id }}
-        quarkus_otel_exporter_otlp_traces_endpoint: ${{ env.otel-exporter-otlp-endpoint-grpc }}
+        quarkus_otel_exporter_otlp_protocol: http/protobuf
+        quarkus_otel_exporter_otlp_traces_endpoint: ${{ env.otel-exporter-otlp-endpoint }}
         quarkus_otel_exporter_otlp_headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }},${{ env.otel-otel-resource-attributes }}"
     
     - name: Publish Test Report
