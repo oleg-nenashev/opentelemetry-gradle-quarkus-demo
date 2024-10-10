@@ -13,11 +13,11 @@ permissions:
   checks: write
 
 env:
-  honeycomb-url: https://ui.honeycomb.io/team-a-utomation/environments/dev/datasets/demo-java-cicd-o11y/trace?trace_id=
+  honeycomb-url: https://ui.honeycomb.io/team-a-utomation/environments/test/datasets/demo-java-cicd-o11y/trace?trace_id=
   otel-exporter-otlp-endpoint: https://api.honeycomb.io
   otel-exporter-otlp-endpoint-grpc: api.honeycomb.io:443
   otel-service-name: "demo-java-cicd-o11y"
-  otel-resource-attributes: deployment.environent=dev,service.version=0.1.0
+  otel-resource-attributes: deployment.environent=test,service.version=0.1.0
 
 jobs:
   build:
@@ -52,7 +52,7 @@ jobs:
         TRACE_ID: ${{ steps.setup-telemetry.outputs.trace-id }}
         SPAN_ID: ${{ steps.setup-telemetry.outputs.job-span-id }}
         quarkus_otel_exporter_otlp_traces_endpoint: ${{ env.otel-exporter-otlp-endpoint-otel-exporter-otlp-endpoint-grpc }}
-        quarkus_otel_exporter_otlp_headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}"
+        quarkus_otel_exporter_otlp_headers: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }},${{ env.otel-otel-resource-attributes }}"
     
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v4
