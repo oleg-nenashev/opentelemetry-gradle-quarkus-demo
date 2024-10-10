@@ -90,3 +90,17 @@ jobs:
         otel-service-name: ${{ env.otel-service-name }}
         started-at: ${{ steps.setup-telemetry.outputs.started-at }}
         traceparent: ${{ steps.setup-telemetry.outputs.traceparent }}
+
+  otel-export-trace:
+    if: always()
+    name: OpenTelemetry Export Trace
+    runs-on: ubuntu-latest
+    needs: [build] # must run when all jobs are complete
+    steps:
+      - name: Export Workflow Trace
+        uses: inception-health/otel-export-trace-action@latest
+        with:
+          otelServiceName: ${{ env.otel-service-name }}
+          otlpEndpoint: grpc://api.honeycomb.io:443/
+          otlpHeaders: "x-honeycomb-team=${{ secrets.HONEYCOMB_API_TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
