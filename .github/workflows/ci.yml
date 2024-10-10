@@ -29,6 +29,7 @@ jobs:
         dataset: ${{ env.otel-service-name }}
         status: ${{ job.status }}
         matrix-key: ${{ matrix.value }}
+        send-init-event: true
       # SETS TRACE_ID
 
     - name: Setup telemetry
