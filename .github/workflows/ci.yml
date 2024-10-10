@@ -17,7 +17,7 @@ env:
   otel-exporter-otlp-endpoint: https://api.honeycomb.io
   otel-exporter-otlp-endpoint-grpc: api.honeycomb.io:443
   otel-service-name: "demo-java-cicd-o11y"
-  otel-resource-attributes: deployment.environent=test,service.version=0.1.0
+  otel-resource-attributes: deployment.environment=test,service.version=0.1.0
 
 jobs:
   build:
