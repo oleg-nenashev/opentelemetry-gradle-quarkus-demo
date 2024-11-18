@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl` version "5.1.1"
     `java`
     `idea`
-    id("io.quarkus") version "3.15.1"
+    id("io.quarkus") version "3.16.3"
     `maven-publish`
     id("com.atkinsondev.opentelemetry-build") version "1.14.0"
 }
