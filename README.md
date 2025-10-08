@@ -1,7 +1,7 @@
-# Demo: Build Tool Observability with OpenTelemetry, Gradle and Quarkus
+# Demo: Build Tool Observability with OpenTelemetry, Gradle Build Tool, and Quarkus
 
-Demonstrates using Gradle Quarkus Plugin for building a Quarkus a web application with Gradle Build Tool,
-with the WireMock dev service being used for development purposes.
+Demonstrates using Gradle Quarkus Plugin for building a Quarkus web application with Gradle Build Tool,
+using the WireMock dev service for development purposes.
 Everything is connected to OpenTelemetry and exposes data there.
 
 Components:
@@ -20,7 +20,7 @@ The most recent version is here: https://speakerdeck.com/onenashev/java-cicd-obs
 ## GitHub Actions with Honeycomb
 
 I took Honeycomb for the GitHub Actions demo.
-You can fork the repository and do minimum reconfiguration to reproduce it on your instance.
+You can fork the repository and do minimal reconfiguration to reproduce it on your instance.
 
 ### Manual test
 
@@ -48,7 +48,7 @@ Use `clean`, `test`, or any other Gradle Build Tool's feature to alter the behav
 
 ### Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
+You can run your application in dev mode which enables live coding using:
 
 ```shell script
 quarkus dev
@@ -74,3 +74,7 @@ It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
 Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
 
 The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
+
+## Copyright Notice
+
+Gradle®, Develocity®, Build Scan®, and the Gradlephant logo are registered trademarks of Gradle, Inc. "Gradle" means "Gradle Build Tool" and does not reference Gradle, Inc. and/or its subsidiaries.
